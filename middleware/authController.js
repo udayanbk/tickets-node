@@ -31,10 +31,12 @@ exports.signupUser = async (req, res) => {
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
-
+  console.log('email', email)
+  console.log('password', password)
   try {
     const user = await UsersModel.forge().where({ email }).fetch({
-      withRelated: ["role"]
+      withRelated: ["role"],
+      require: false
     });
   
     if (!user) {
