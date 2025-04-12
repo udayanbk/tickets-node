@@ -73,7 +73,6 @@ exports.loginUser = async (req, res) => {
 
     res.json({
       message: 'Login successful',
-      token,
       user: {
         id: userData.id,
         emp_id: userData.emp_id,
@@ -84,6 +83,20 @@ exports.loginUser = async (req, res) => {
       }
     });
 
+  } catch (err) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.logout = async (req, res) => {
+  try{
+    res.clearCookie("auth_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    return res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ error: 'Server error' });
