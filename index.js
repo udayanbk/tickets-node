@@ -4,14 +4,28 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/userRoutes');
 const logger = require('./middleware/logger');
 const ticketRoutes = require('./routes/ticketRoutes');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = 5000;
 
 // Middleware
-app.use(cors());
+// app.use(cors());
+
+// app.use(cors({
+//   origin: "http://localhost:3000", // Frontend origin
+//   methods: "GET", // for SSE
+//   credentials: true
+// }));
+
+app.use(cors({
+  origin: 'http://localhost:3000',  // or your frontend domain
+  credentials: true
+}));
+
 // app.use(express.json())
 app.use(bodyParser.json())
+app.use(cookieParser())
 
 // Routes
 console.log('----1')

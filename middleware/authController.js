@@ -56,13 +56,20 @@ exports.loginUser = async (req, res) => {
         id: userData.id,
         emp_id: userData.emp_id,
         email: userData.email,
-        // role_id: userData.role_id,
+        role_id: userData.role_id,
         role: userData.role.role_name,
         name: userData.name
       },
       JWT_SECRET,
       { expiresIn: '1d' }
     );
+
+    res.cookie('auth_token', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'Strict',
+      maxAge: 86400000,
+    });
 
     res.json({
       message: 'Login successful',
@@ -72,7 +79,7 @@ exports.loginUser = async (req, res) => {
         emp_id: userData.emp_id,
         name: userData.name,
         email: userData.email,
-        // role_id: userData.role_id
+        role_id: userData.role_id,
         role: userData.role.role_name,
       }
     });

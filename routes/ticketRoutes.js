@@ -1,14 +1,19 @@
 const express = require('express');
 const router = express.Router();
 const ticketController = require('../controllers/ticketController');
+const { eventsHandler } = require('../controllers/sseController');
 const authenticateToken = require('../middleware/user-auth');
 
-router.post('/new', ticketController.createTicket);
+router.post('/new', authenticateToken, ticketController.createTicket);
 
-router.get('/:emp_id',  ticketController.getMyTickets);
+router.get('/:pageNo',  authenticateToken, ticketController.getMyTickets);
 
-router.post('/action', ticketController.actionTicket);
+router.post('/action', authenticateToken, ticketController.actionTicket);
 
-router.post('/history', ticketController.ticketHistory);
+router.get('/history/:pageNo', authenticateToken, ticketController.ticketHistory);
+
+router.get('/admin/getAllTickets', authenticateToken, ticketController.getAllTickets);
+
+router.get('/events', eventsHandler);
 
 module.exports = router;
